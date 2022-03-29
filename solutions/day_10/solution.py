@@ -9,7 +9,7 @@ scores_first = {')': 3, '}': 1197, ']': 57, '>': 25137}
 scores_second = {')': 1, '}': 3, ']': 2, '>': 4}
 
 
-def calculate_scores(lines):
+def calculate_scores(lines, get_incomplete=False):
     score_corrupted = 0
     scores_incomplete = []
     for line in lines:
@@ -29,15 +29,22 @@ def calculate_scores(lines):
             for bracket in reversed(stack):
                 score = score*5 + scores_second[opening[bracket]]
             scores_incomplete.append(score)
-    print(f"The answer for task 1 is: {score_corrupted}")
-    print(f"The answer for task 2 is: {int(median(scores_incomplete))}")
+    if not get_incomplete:
+        return score_corrupted
+    else:
+        return int(median(scores_incomplete))
 
+def read_input(input_file):
+    with open(input_file, "r") as file:
+        return [line.strip() for line in file]
 
-with open("test.txt", "r") as file:
-    test = [line.strip() for line in file]
-calculate_scores(test)
+def solve_first(input):
+    return calculate_scores(input)
 
-with open("input.txt", "r") as file:
-    myinput = [line.strip() for line in file]
-calculate_scores(myinput)
+def solve_second(input):
+    return calculate_scores(input, get_incomplete=True)
 
+if __name__ == "__main__":
+    my_input = read_input("../../input/input_10.txt")
+    print(solve_first(my_input))
+    print(solve_second(my_input))

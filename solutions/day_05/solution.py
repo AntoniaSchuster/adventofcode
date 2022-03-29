@@ -35,7 +35,7 @@ class Field:
     def update_vents(self, line, diagonal=False):
         if not line.diagonal:
             for p in line.points:
-                self.vents[str(p)] +=1
+                    self.vents[str(p)] +=1
         if diagonal:
             if line.diagonal:
                 for p in line.points:
@@ -43,29 +43,31 @@ class Field:
     
     def count_overlaps(self):
         overlaps = sum([1 for n in self.vents.values() if n > 1])
-        print(f"Number of overlaps: {overlaps}")
+        return overlaps
 
-def run(myinput, diagonal=False):
-	field = Field()
-	lines = [Line(l) for l in myinput]
-	for l in lines:
-		field.update_vents(l, diagonal)
-	field.count_overlaps()
-	
-with open("test.txt", "r") as file:
-    test = [line.strip() for line in file]
 
-print("Test:")
-run(test)
-run(test, diagonal=True)
+def read_input(input_file):
+    with open(input_file, "r") as file:
+        return [line.strip() for line in file]
 
-with open("input.txt", "r") as file:
-    my_input = [line.strip() for line in file]
-	
-print("My input:")
-run(my_input)
-run(my_input, diagonal=True)
+def solve_first(input):
+    field = Field()
+    lines = [Line(l) for l in input]
+    for l in lines:
+        field.update_vents(l)
+    return field.count_overlaps()
 
+def solve_second(input):
+    field = Field()
+    lines = [Line(l) for l in input]
+    for l in lines:
+        field.update_vents(l, diagonal=True)
+    return field.count_overlaps()
+
+if __name__ == "__main__":
+    my_input = read_input("../../input/input_05.txt")
+    print(solve_first(my_input))
+    print(solve_second(my_input))
 
 
 

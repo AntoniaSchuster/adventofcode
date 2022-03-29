@@ -32,32 +32,27 @@ class position:
         elif command.direction == "forward":
             self.horizontal += command.amount
             self.depth += self.aim * command.amount
-        
-def parse_input(input):
-    return [command(line) for line in input]
 
-def run_first(input):
-    commands = parse_input(input)
+
+def read_input(input_file):
+    with open(input_file, "r") as file:
+        return [line.strip() for line in file]
+
+def solve_first(input):
+    commands = [command(line) for line in input]
     p = position()
     for c in commands:
         p.execute(c)
-    print(p)
-    
-def run_second(input):
-    commands = parse_input(input)
+    return p.horizontal*p.depth
+
+def solve_second(input):
+    commands = [command(line) for line in input]
     p = position()
     for c in commands:
         p.execute_corrected(c)
-    print(p)
+    return p.horizontal*p.depth
 
-with open("test.txt", "r") as file:
-    test = [line.strip() for line in file]
-print("Test:")
-run_first(test)
-run_second(test)
-
-with open("input.txt", "r") as file:
-    input = [line.strip() for line in file]
-print("\nMy input:")
-run_first(input)
-run_second(input)
+if __name__ == "__main__":
+    my_input = read_input("../../input/input_02.txt")
+    print(solve_first(my_input))
+    print(solve_second(my_input))

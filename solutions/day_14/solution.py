@@ -2,6 +2,7 @@
 # coding: utf-8
 
 from collections import defaultdict
+from re import template
 
 class Poly:
     
@@ -22,7 +23,7 @@ class Poly:
         counts = defaultdict(int)
         for e in self.current:
             counts[e] += 1
-        print(max(counts.values())-min(counts.values()))
+        return max(counts.values())-min(counts.values())
         
     def calculate_result_fast(self, iterations):
         pairs = ["".join(pair) for pair in zip(self.current, self.current[1:])]
@@ -44,36 +45,33 @@ class Poly:
         for p, c in self.counter.items():
             count_chars[p[0]] += c
         count_chars[last_letter] += 1
-        print(max(count_chars.values())-min(count_chars.values()))
-        
-with open("test.txt", "r") as file:
-    test_template = file.readline().strip()
-    file.readline()
-    test_rules = [line.strip() for line in file.readlines()]
-    
-print("Test:")
+        return max(count_chars.values())-min(count_chars.values())
 
-poly = Poly(test_template, test_rules)
-for n in range(10):
-    poly.polymerize()
-poly.calculate_result()
+def read_input(input_file):
+    with open(input_file, "r") as file:
+        template = file.readline().strip()
+        file.readline()
+        rules = [line.strip() for line in file.readlines()]
+        return template, rules
 
-poly = Poly(test_template, test_rules)
-poly.calculate_result_fast(40)
+def solve_first(input):
+    template, rules = input
+    poly = Poly(template, rules)
+    for n in range(10):
+        poly.polymerize()
+    return poly.calculate_result()
+
+def solve_second(input):
+    template, rules = input
+    poly = Poly(template, rules)
+    return poly.calculate_result_fast(40)
+
+if __name__ == "__main__":
+    my_input = read_input("../../input/input_14.txt")
+    print(solve_first(my_input))
+    print(solve_second(my_input))
 
 
-with open("input.txt", "r") as file:
-    my_template = file.readline().strip()
-    file.readline()
-    my_rules = [line.strip() for line in file.readlines()]
 
-print("My input:")
 
-poly = Poly(my_template, my_rules)
-for n in range(10):
-    poly.polymerize()
-poly.calculate_result()
-
-poly = Poly(my_template, my_rules)
-poly.calculate_result_fast(40)
 
